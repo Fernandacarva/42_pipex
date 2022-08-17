@@ -12,8 +12,8 @@
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
-NAME		= 
-SRCS		= 
+NAME		= pipex.a 
+SRCS		= pipex.c
 
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -rf
@@ -24,20 +24,17 @@ RM			= rm -rf
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			make -C ./
-			cp ./
-			ar rcs $(NAME) $(OBJS)
+		    $(CC) $(OBJS) -o $(NAME)
 
 
 clean:
 			$(RM) $(OBJS)
-			make clean -C ./
+			make clean $(OBJS)
 
 fclean:		clean
 			$(RM) $(NAME)
-			make fclean -C ./
+			make fclean $(NAME)
 
 re:			fclean all
-			make re -C ./
 
 .PHONY:		all clean fclean re
