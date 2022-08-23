@@ -15,5 +15,11 @@
 
 # include <stdarg.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include "libft/include/libft.h"
+# include <sys/wait.h>
+# include <stdlib.h>
 
+char    *path_process(char *cmd, char **envp);
+void	error(void);
 #endif

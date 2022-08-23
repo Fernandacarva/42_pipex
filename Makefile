@@ -12,8 +12,8 @@
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
-NAME		= pipex.a 
-SRCS		= pipex.c
+NAME		= pipex 
+SRCS		= pipex.c error.c
 
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -rf
@@ -28,12 +28,13 @@ $(NAME):	$(OBJS)
 
 
 clean:
-			$(RM) $(OBJS)
-			make clean $(OBJS)
+        
+            @make clean -C ./libft
+		    @$(RM) $(OBJ)
 
 fclean:		clean
-			$(RM) $(NAME)
-			make fclean $(NAME)
+			@make fclean -C ./libft
+		    @$(RM) $(OBJ)
 
 re:			fclean all
 
