@@ -1,40 +1,28 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Makefile                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ferncarv <ferncarv@student.42.rio>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/10 15:36:21 by ferncarv          #+#    #+#             */
-/*   Updated: 2022/07/10 02:47:04 by ferncarv         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+NAME	= pipex
 
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
-NAME		= pipex 
-SRCS		= pipex.c error.c
+SRCS	= 	pipex_utils.c \
+			pipex.c
 
-OBJS		= $(SRCS:.c=.o)
-RM			= rm -rf
+OBJS	=  $(SRCS:.c=.o)
+
+CFLAGS	= -Wall -Wextra -Werror
 
 .c.o:
-			$(CC) $(CFLAGS) -I . -c $< -o $(<:.c=.o)
+			cc $(CFLAGS) -c $< -o $(<:.c=.o)
+
+$(NAME):	$(OBJS)
+			make -C ./libft
+			cc $(SRCS) ./libft/libft.a -o pipex
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS)
-		    $(CC) $(OBJS) -o $(NAME)
-
-
 clean:
-        
-            @make clean -C ./libft
-		    @$(RM) $(OBJ)
+			rm -f $(OBJS)
+			make clean -C ./libft
 
 fclean:		clean
-			@make fclean -C ./libft
-		    @$(RM) $(OBJ)
+			rm -f $(NAME)
+			make fclean -C ./libft
 
 re:			fclean all
 

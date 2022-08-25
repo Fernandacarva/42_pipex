@@ -3,46 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ferncarv <ferncarv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ferncarv <ferncarv@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/18 14:56:53 by ferncarv          #+#    #+#             */
-/*   Updated: 2022/08/18 11:01:56 by ferncarv         ###   ########.fr       */
+/*   Created: 2022/07/26 13:14:17 by ferncarv          #+#    #+#             */
+/*   Updated: 2022/08/25 14:58:08 by ferncarv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.c"
+#include <stdio.h>
+#include "pipex.h"
 
-void    error(void)
+char	*test_access(char **path, char **cmd);
+
+char	*get_path(char **envp, char **cmd)
 {
-    ft_putstr_fd("Error!", 2);
-    exit(EXIT_FAILURE);
+	char	**path;
+	char	*env_path;
+	int		i;
+
+	i = -1;
+	while (envp[++i])
+	{
+		if (ft_strnstr(envp[i], "PATH=", 5) != 0)
+			env_path = ft_strnstr(envp[i], "PATH=", 5);
+	}
+	path = ft_split(env_path + 5, ':');
+	return (test_access(path, cmd));
 }
 
-char    *path_process(char *cmd, char **envp)
+char	**get_cmd(char *argv)
 {
-    int i;
-    char    *in_path;
-    char    *path;
-    char    **paths;
+	char	**cmd;
 
-    i = 0;
-    while (ft_strnstr(envp[i], "PATH", 4) == 0)
-        i++;
-    paths = ft_split(envvp[i] + 5, ':');
-    i = -1;
-    while (paths[++i])
-    {
-		init_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(init_path, cmd);
-		free(init_path);
-		if (access(path, F_OK) == 0)
-			return (path);
-		free(path);
-	}
-    i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
+	cmd = ft_split(argv, ' ');
 	return (cmd);
 }
 
+char	*test_access(char **path, char **cmd)
+{
+	char	*temp;
+	char	*cmd_path;
+	int		i;
+
+	i = -1;
+	while (path[++i])
+	{	
+		temp = ft_strjoin(path[i], "/");
+		cmd_path = ft_strjoin(temp, cmd[0]);
+		free(temp);
+		if (access(cmd_path, F_OK | X_OK) == 0)
+			return (cmd_path);
+		free(cmd_path);
+	}
+	return (0);
+}
